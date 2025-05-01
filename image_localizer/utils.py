@@ -3,6 +3,8 @@
 from pathlib import Path
 from typing import Optional, Tuple
 from PIL import Image, ExifTags
+from pycolmap import Reconstruction
+import numpy as np
 
 def get_latlon(img_path: Path) -> Optional[Tuple[float, float]]:
     """
@@ -37,3 +39,16 @@ def get_latlon(img_path: Path) -> Optional[Tuple[float, float]]:
         lon = -lon
 
     return lat, lon
+
+
+def compute_bbox(
+    points3D_ids: list,
+    sfm_dir: str
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Given a list of 3D‐point IDs and the COLMAP model directory,
+    returns (mins, maxs) corner coordinates of the AABB.
+    """
+    model = Reconstruction(sfm_dir)
+    pts = np.vstack([model.points3D[p].xyz for p in points3D_ids])
+    return pts.min(axis=0), pts.max(axis=0)
