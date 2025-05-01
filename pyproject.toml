@@ -1,12 +1,32 @@
 [build-system]
-requires    = ["setuptools>=42"]
-build-backend = "setuptools.build_meta"
+requires       = ["setuptools>=61.0", "wheel"]
+build-backend  = "setuptools.build_meta"
 
 [project]
 name            = "image-localizer"
 version         = "0.1.0"
 description     = "Image localization pipeline (NetVLAD→FAISS→HLoc)"
-authors         = [{ name="Dariya Bakshinska    ", email="darya.bakshinska@farsightvision.com" }]
+authors         = [{ name="Dariya Bakshinska", email="darya.bakshinska@farsightvision.com" }]
 requires-python = ">=3.8"
-packages        = ["image_localizer"]
-dependencies    = []
+
+dependencies = [
+  # only pull the pip wheel on Linux
+  "faiss-cpu; sys_platform == 'linux'",
+  "pycolmap",
+  "plyfile",
+  "plotly",
+  "Pillow",
+  "numpy",
+  "h5py",
+  "hloc @ git+https://github.com/cvg/Hierarchical-Localization.git@master"
+]
+
+[project.optional-dependencies]
+dev = [
+  "jupyter",
+  "scipy"
+]
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["image_localizer*"]
