@@ -1,7 +1,3 @@
-[build-system]
-requires       = ["setuptools>=61.0", "wheel"]
-build-backend  = "setuptools.build_meta"
-
 [project]
 name            = "image-localizer"
 version         = "0.1.0"
@@ -11,14 +7,16 @@ requires-python = ">=3.8"
 
 dependencies = [
   # only pull the pip wheel on Linux
-  "faiss-cpu; sys_platform == 'linux'",
+  # "faiss-cpu; sys_platform == 'linux'",
+  "faiss-cpu",
   "pycolmap",
   "plyfile",
   "plotly",
   "Pillow",
   "numpy",
   "h5py",
-  "hloc @ git+https://github.com/cvg/Hierarchical-Localization.git@master"
+  # "hloc @ git+https://github.com/cvg/Hierarchical-Localization.git@master"
+  "hloc",
 ]
 
 [project.optional-dependencies]
@@ -27,9 +25,9 @@ dev = [
   "scipy"
 ]
 
-[tool.setuptools.packages.find]
-where   = ["."]
-include = ["image_localizer*"]
+ [build-system]
+ requires = ["hatchling"]
+ build-backend = "hatchling.build"
 
-[project.scripts]
-image-localizer = "image_localizer.__main__:main"
+ [tool.uv.sources]
+ hloc = { git = "https://github.com/cvg/Hierarchical-Localization.git", rev = "master" }
