@@ -30,3 +30,6 @@ dev = [
 [tool.setuptools.packages.find]
 where   = ["."]
 include = ["image_localizer*"]
+
+[project.scripts]
+image-localizer = "image_localizer.__main__:main"
