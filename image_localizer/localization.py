@@ -107,9 +107,9 @@ def localize_image(
     match_features.main(
         match_conf,
         pairs_file,
-        features=str(feats_h5),
-        matches=str(matches_h5),
-        overwrite=True
+        features=feats_h5,
+        matches=matches_h5,
+        overwrite=True,
     )
 
     # — 4) LOAD your COLMAP SfM model
@@ -147,11 +147,11 @@ def localize_image(
     # — 8) RUN the localization
     ret, log = pose_from_cluster(
         localizer,
-        query_name = query_image.name,
-        camera     = camera,
-        ref_ids    = ref_ids,
-        features_h5= str(feats_h5),
-        matches_h5 = str(matches_h5),
+        query_image.name,   # qname
+        camera,             # query_camera
+        ref_ids,            # db_ids
+        feats_h5,           # features_path
+        matches_h5,         # matches_path
     )
 
     return PoseResult(
